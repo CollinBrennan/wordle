@@ -33,9 +33,7 @@ export default function Board({ wordLength, rows, answer }: Props) {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!gameIsOver) {
-        if (isLetter(event.key)) {
-        }
-        addLetter(event.key)
+        if (isLetter(event.key)) addLetter(event.key)
         if (event.key === "Backspace") removeLetter()
       }
     }
