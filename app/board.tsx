@@ -1,11 +1,11 @@
-'use client'
+"use client"
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from "react"
 
 enum Status {
   ABSENT,
   PRESENT,
-  EXACT
+  EXACT,
 }
 
 type Props = {
@@ -15,10 +15,14 @@ type Props = {
 }
 
 export default function Board({ wordLength, rows, answer }: Props) {
-  const [board, setBoard] = useState<string[][]>(createEmptyBoard(wordLength, rows))
-  const [boardStatus, setBoardStatus] = useState<Status[][]>(createEmptyBoardStatus(wordLength, rows))
+  const [board, setBoard] = useState<string[][]>(
+    createEmptyBoard(wordLength, rows)
+  )
+  const [boardStatus, setBoardStatus] = useState<Status[][]>(
+    createEmptyBoardStatus(wordLength, rows)
+  )
 
-  const square = useRef({row: 0, col: -1})
+  const square = useRef({ row: 0, col: 0 })
 
   const charMap = createCharMap(answer)
 
@@ -26,58 +30,48 @@ export default function Board({ wordLength, rows, answer }: Props) {
     console.log(answer)
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (isLetter(event.key)) addletter(event.key)
+      if (isLetter(event.key)) addLetter(event.key)
     }
 
-    document.addEventListener('keydown', handleKeyDown)
+    document.addEventListener("keydown", handleKeyDown)
 
-    return () => document.removeEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener("keydown", handleKeyDown)
   }, [])
 
-  useEffect(() => {
-    const {row, col} = square.current
+  const addLetter = (letter: string) => {
+    const { row, col } = square.current
+    const newBoard = [...board]
+    newBoard[row][col] = letter
+    setBoard(newBoard)
+
     if (col === wordLength - 1) {
-      updateBoardStatus(row)
+      updateBoardStatus(row, newBoard[row])
       if (row < rows - 1) {
         square.current.row += 1
         square.current.col = 0
       }
-
     } else {
       square.current.col += 1
     }
-  }, [board])
-
-  const addletter = (letter: string) => {
-    const {row, col} = square.current
-    updateBoard(row, col, letter)
   }
 
-  const updateBoard = (row: number, col: number, value: string) => {
-    setBoard(prev => {
-      const newBoard = [...prev]
-      newBoard[row][col] = value
-      return newBoard
-    })
-  }
-
-  const updateBoardStatus = (rowIndex: number) => {
-    const map = {...charMap}
+  const updateBoardStatus = (rowIndex: number, row: string[]) => {
+    const map = { ...charMap }
     const statusRow: Status[] = []
-    const row = board[rowIndex]
+
     for (let i = 0; i < row.length; i++) {
       const letter = row[i]
       if (map[letter] && map[letter] > 0) {
         if (letter === answer[i]) statusRow.push(Status.EXACT)
         else statusRow.push(Status.PRESENT)
-        
+
         map[letter] -= 1
       } else {
         statusRow.push(Status.ABSENT)
       }
     }
 
-    setBoardStatus(prev => {
+    setBoardStatus((prev) => {
       const newBoardStatus = [...prev]
       newBoardStatus[rowIndex] = statusRow
       return newBoardStatus
@@ -87,9 +81,14 @@ export default function Board({ wordLength, rows, answer }: Props) {
   return (
     <div className="flex flex-col gap-4">
       {board.map((row, i) => (
-        <div className="flex gap-4">
+        <div key={i} className="flex gap-4">
           {row.map((letter, j) => (
-            <div style={{backgroundColor: getBackgroundColor(boardStatus[i][j])}} className="border-2 border-white size-12">{letter}</div>
+            <div
+              style={{ backgroundColor: getBackgroundColor(boardStatus[i][j]) }}
+              className="border-2 border-white size-12"
+            >
+              {letter}
+            </div>
           ))}
         </div>
       ))}
@@ -99,7 +98,7 @@ export default function Board({ wordLength, rows, answer }: Props) {
 
 function createEmptyBoard(wordLength: number, rows: number): string[][] {
   return Array.from({ length: rows }, () =>
-    Array.from({ length: wordLength }, () => '')
+    Array.from({ length: wordLength }, () => "")
   )
 }
 
@@ -110,7 +109,7 @@ function createEmptyBoardStatus(wordLength: number, rows: number): Status[][] {
 }
 
 function isLetter(string: string) {
-  return /^[a-zA-z]$/.test(string)
+  return /^[a-zA-Z]$/.test(string)
 }
 
 function createCharMap(chars: string) {
@@ -122,12 +121,11 @@ function createCharMap(chars: string) {
       map[char] = 1
     }
   }
-
   return map
 }
 
 function getBackgroundColor(status: Status): string {
-  if (status === Status.EXACT) return 'green'
-  else if (status === Status.PRESENT) return 'yellow'
-  else return 'gray'
+  if (status === Status.EXACT) return "green"
+  else if (status === Status.PRESENT) return "yellow"
+  else return "gray"
 }
