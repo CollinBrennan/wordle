@@ -5,8 +5,9 @@ import { useState } from 'react'
 type Props = {
   wordLength: number
   rows: number
+  answer: string
 }
-export default function Board({ wordLength, rows }: Props) {
+export default function Board({ wordLength, rows, answer }: Props) {
   const [board, setBoard] = useState<string[][]>(
     createEmptyBoard(wordLength, rows)
   )
