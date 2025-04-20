@@ -31,6 +31,7 @@ export default function Board({ wordLength, rows, answer }: Props) {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (isLetter(event.key)) addLetter(event.key)
+      if (event.key === "Backspace") removeLetter()
     }
 
     document.addEventListener("keydown", handleKeyDown)
@@ -52,6 +53,18 @@ export default function Board({ wordLength, rows, answer }: Props) {
       }
     } else {
       square.current.col += 1
+    }
+  }
+
+  const removeLetter = () => {
+    const { row, col } = square.current
+    if (col > 0) {
+      square.current.col -= 1
+      const newBoard = [...board]
+
+      newBoard[row][square.current.col] = ""
+
+      setBoard(newBoard)
     }
   }
 
