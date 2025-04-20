@@ -10,8 +10,11 @@ export default async function Home() {
   return (
     <div>
       <main className="flex flex-col min-h-screen items-center justify-center margin-auto gap-8">
-        <h1>Wordle Clone</h1>
+        <h1>Collin Brennan - Wordle Clone</h1>
         <Board wordLength={WORD_LENGTH} rows={ROWS} answer={answer} />
+        <a href="https://github.com/CollinBrennan/wordle" target="_blank">
+          GitHub
+        </a>
       </main>
     </div>
   )

@@ -115,7 +115,7 @@ export default function Board({ wordLength, rows, answer }: Props) {
                 style={{
                   backgroundColor: getBackgroundColor(boardStatus[i][j]),
                 }}
-                className="border-2 border-white size-12"
+                className="flex items-center justify-center uppercase font-bold text-2xl text-center border-2 border-white/50 size-12"
               >
                 {letter}
               </div>
@@ -156,7 +156,7 @@ function createCharMap(chars: string) {
 }
 
 function getBackgroundColor(status: Status): string {
-  if (status === Status.EXACT) return "green"
-  else if (status === Status.PRESENT) return "yellow"
-  else return "gray"
+  if (status === Status.EXACT) return "#538d4e"
+  else if (status === Status.PRESENT) return "#b59f3b"
+  else return "#3a3a3c"
 }
