@@ -33,7 +33,9 @@ export default function Board({ wordLength, rows, answer }: Props) {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!gameIsOver) {
-        if (isLetter(event.key)) addLetter(event.key)
+        if (isLetter(event.key)) {
+        }
+        addLetter(event.key)
         if (event.key === "Backspace") removeLetter()
       }
     }
@@ -104,7 +106,7 @@ export default function Board({ wordLength, rows, answer }: Props) {
       <h2 className={`pb-4 text-center ${!gameIsOver ? "invisible" : ""}`}>
         {guessIsCorrect ? "Congratulations!" : "Sorry, game over!"}
         <br />
-        The word was '{answer}'
+        The word was &apos;{answer}&apos;
       </h2>
       <div className="flex flex-col gap-4">
         {board.map((row, i) => (
@@ -145,7 +147,7 @@ function isLetter(string: string) {
 
 function createCharMap(chars: string) {
   const map: Record<string, number> = {}
-  for (let char of chars) {
+  for (const char of chars) {
     if (map[char]) {
       map[char] += 1
     } else {
