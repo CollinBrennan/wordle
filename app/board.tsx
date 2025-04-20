@@ -102,7 +102,7 @@ export default function Board({ wordLength, rows, answer }: Props) {
   return (
     <div>
       <h2 className={`pb-4 text-center ${!gameIsOver ? "invisible" : ""}`}>
-        {guessIsCorrect ? "Congragulations!" : "Sorry, game over!"}
+        {guessIsCorrect ? "Congratulations!" : "Sorry, game over!"}
         <br />
         The word was '{answer}'
       </h2>
