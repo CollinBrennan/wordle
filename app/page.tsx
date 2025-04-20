@@ -1,5 +1,5 @@
-import { fetchWord } from '@/actions'
-import Board from './board'
+import { fetchWord } from "@/actions"
+import Board from "./board"
 
 const WORD_LENGTH = 5
 const ROWS = 6
